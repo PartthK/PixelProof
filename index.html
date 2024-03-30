@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pixel Proof - Video Uploader</title>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #e0f2f1;
+      margin: 0;
+    }
+
+    .navbar {
+      background-color: #00695c;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem;
+    }
+
+    .navbar-logo {
+      font-family: 'Press Start 2P', cursive;
+      color: white;
+      font-size: 1.5rem;
+      text-decoration: none;
+    }
+
+    .navbar-links {
+      list-style: none;
+      display: flex;
+      margin: 0;
+      padding: 0;
+    }
+
+    .navbar-links li {
+      margin-left: 1rem;
+    }
+
+    .navbar-links a {
+      color: white;
+      text-decoration: none;
+      font-size: 1rem;
+    }
+
+    .container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: calc(100vh - 4rem);
+    }
+
+    .content {
+      background-color: white;
+      padding: 3rem;
+      border-radius: 20px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      max-width: 500px;
+      width: 100%;
+    }
+
+    h1 {
+      color: #00695c;
+      font-size: 2.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .button {
+      background-color: #009688;
+      border: none;
+      color: white;
+      padding: 20px 40px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 18px;
+      margin: 15px;
+      cursor: pointer;
+      border-radius: 10px;
+      transition: background-color 0.3s;
+    }
+
+    .button:hover {
+      background-color: #00796b;
+    }
+
+    input[type="text"], input[type="file"] {
+      padding: 15px;
+      margin: 15px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      width: 80%;
+      font-size: 16px;
+    }
+
+    .video-container {
+      margin-top: 2rem;
+    }
+
+    video {
+      width: 100%;
+      max-width: 800px;
+      height: auto;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <a href="#" class="navbar-logo">Pixel Proof</a>
+    <ul class="navbar-links">
+      <li><a href="#" target="_blank">Home</a></li>
+      <li><a href="#" target="_blank">About Us</a></li>
+      <li><a href="#" target="_blank">Contact</a></li>
+    </ul>
+  </nav>
+
+  <div class="container">
+    <div class="content">
+      <h1>Video Uploader</h1>
+      <button class="button" id="linkButton">Enter Link</button>
+      <button class="button" id="uploadButton">Upload Video</button>
+      <div id="linkForm" style="display: none;">
+        <input type="text" id="linkInput" placeholder="Enter video link">
+        <button class="button" id="enterButton">Enter</button>
+        <button class="button" id="backButton1">Back</button>
+      </div>
+      <div id="uploadForm" style="display: none;">
+        <input type="file" id="fileInput" accept="video/*">
+        <button class="button" id="backButton2">Back</button>
+      </div>
+      <div class="video-container" id="videoContainer" style="display: none;">
+        <video id="videoPreview" controls></video>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const linkButton = document.getElementById('linkButton');
+    const uploadButton = document.getElementById('uploadButton');
+    const linkForm = document.getElementById('linkForm');
+    const uploadForm = document.getElementById('uploadForm');
+    const linkInput = document.getElementById('linkInput');
+    const fileInput = document.getElementById('fileInput');
+    const enterButton = document.getElementById('enterButton');
+    const backButton1 = document.getElementById('backButton1');
+    const backButton2 = document.getElementById('backButton2');
+    const videoContainer = document.getElementById('videoContainer');
+    const videoPreview = document.getElementById('videoPreview');
+
+    linkButton.addEventListener('click', () => {
+      linkForm.style.display = 'block';
+      uploadForm.style.display = 'none';
+      videoContainer.style.display = 'none';
+    });
+
+    uploadButton.addEventListener('click', () => {
+      uploadForm.style.display = 'block';
+      linkForm.style.display = 'none';
+      videoContainer.style.display = 'none';
+    });
+
+    enterButton.addEventListener('click', () => {
+      const link = linkInput.value;
+      console.log('Entered link:', link);
+      videoPreview.src = link;
+      videoContainer.style.display = 'block';
+    });
+
+    fileInput.addEventListener('change', (event) => {
+      const file = event.target.files[0];
+      console.log('Uploaded file:', file);
+      const fileURL = URL.createObjectURL(file);
+      videoPreview.src = fileURL;
+      videoContainer.style.display = 'block';
+    });
+
+    backButton1.addEventListener('click', () => {
+      linkForm.style.display = 'none';
+    });
+
+    backButton2.addEventListener('click', () => {
+      uploadForm.style.display = 'none';
+    });
+  </script>
+</body>
+</html>
