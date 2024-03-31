@@ -260,6 +260,15 @@
         box-shadow: 30px 0 0 #97bf0d;
       }
     }
+    .confidence-level-box {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .button {
+    display: block;
+    margin: 0 auto;
+  }
   </style>
 </head>
 <body>
@@ -278,98 +287,21 @@
 
   <div class="container">
     <div class="content">
-      <h1>Video Uploader</h1>
-      <button class="button" id="linkButton">Enter Link</button>
-      <button class="button" id="uploadButton">Upload Video</button>
-      <div id="linkForm" style="display: none;">
-        <input type="text" id="linkInput" placeholder="Enter video link">
-        <button class="button" id="enterButton">Enter</button>
-        <button class="button" id="backButton1">Back</button>
-      </div>
-      <div id="uploadForm" style="display: none;">
-        <input type="file" id="fileInput" accept="video/*">
-        <button class="button" id="backButton2">Back</button>
-      </div>
-      <div class="video-container" id="videoContainer" style="display: none;">
-        <video id="videoPreview" controls></video>
-      </div>
-      <!-- Popup Box -->
-      <div class="popup" id="popupBox">
-        <div class="popup-box">
-          <div class="loader"></div>
-        </div>
-      </div>
+      <video id="uploadedVideo" controls></video>
     </div>
+
+    <div class="confidence-level-box">
+      <p class="real-or-ai" style="font-size: 30px; color: #55d6aa;"><b>AI Generated</b></p>
+      <h1 class="confidence-level">Confidence Level: 75%</h1>
+    </div>
+
+    <button class="button" onclick="window.location.href = 'index.html';">Back</button>
   </div>
 
   <script>
-    const linkButton = document.getElementById('linkButton');
-    const uploadButton = document.getElementById('uploadButton');
-    const linkForm = document.getElementById('linkForm');
-    const uploadForm = document.getElementById('uploadForm');
-    const linkInput = document.getElementById('linkInput');
-    const fileInput = document.getElementById('fileInput');
-    const enterButton = document.getElementById('enterButton');
-    const backButton1 = document.getElementById('backButton1');
-    const backButton2 = document.getElementById('backButton2');
-    const videoContainer = document.getElementById('videoContainer');
-    const videoPreview = document.getElementById('videoPreview');
-    const popupBox = document.getElementById('popupBox');
-
-    linkButton.addEventListener('click', () => {
-      linkForm.style.display = 'block';
-      uploadForm.style.display = 'none';
-      videoContainer.style.display = 'none';
-    });
-
-    uploadButton.addEventListener('click', () => {
-      uploadForm.style.display = 'block';
-      linkForm.style.display = 'none';
-      videoContainer.style.display = 'none';
-    });
-
-    enterButton.addEventListener('click', () => {
-      const link = linkInput.value;
-      console.log('Entered link:', link);
-      videoPreview.src = link;
-      videoContainer.style.display = 'block';
-    });
-
-    fileInput.addEventListener('change', (event) => {
-      const file = event.target.files[0];
-      console.log('Uploaded file:', file);
-      const fileURL = URL.createObjectURL(file);
-      videoPreview.src = fileURL;
-      videoContainer.style.display = 'block';
-    });
-
-    uploadButton.addEventListener('click', () => {
-      const videoURL = videoPreview.src;
-      if (videoURL && videoURL.startsWith('blob:')) {
-        const a = document.createElement('a');
-        a.href = videoURL;
-        a.download = 'uploaded_video.mp4';
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-
-        popupBox.style.display = 'flex';
-
-        setTimeout(() => {
-          window.location.href = 'AI-output.html';
-        }, 5000);
-      } else {
-        console.error('No video available to download.');
-      }
-    });
-
-    backButton1.addEventListener('click', () => {
-      linkForm.style.display = 'none';
-    });
-
-    backButton2.addEventListener('click', () => {
-      uploadForm.style.display = 'none';
-    });
+    const uploadedVideo = document.getElementById('uploadedVideo');
+    uploadedVideo.src = 'video.mp4';
   </script>
+  </div>
 </body>
 </html>
