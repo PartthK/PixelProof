@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pixel Proof - Home</title>
+  <title>Pixel Proof - Video Upload</title>
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
   <style>
     body {
@@ -282,46 +282,164 @@
         box-shadow: 30px 0 0 #97bf0d;
       }
     }
-
-    .button {
-      color: white;
-      background-color: rgba(0, 0, 0, 0.5);
-      padding: 10px 20px;
-      border: 1px solid white;
-      border-radius: 4px;
-      margin: 10px;
-      text-decoration: none;
-      transition: background-color 0.3s, color 0.3s, transform 0.3s;
-      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5);
-    }
-
-    .button:hover {
-      background-color: white;
-      color: black;
-      transform: translateY(-4px);
-    }
   </style>
 </head>
 <body>
   <header>
     <div class="container">
-      <a href="home.html" class="logo">PixelProof</a>
+      <a href="home.html" class="logo navbar-logo">PixelProof</a>
       <nav>
-        <ul>
-          <li><a href="home.html">Home</a></li>
-          <li><a href="#">About Us</a></li>
-          <li><a href="#">Contact</a></li>
+        <ul class="navbar-links">
+          <li><a href="http://127.0.0.1:5500/home.html" target="_blank">Home</a></li>
+          <li><a href="#" target="_blank">About Us</a></li>
+          <li><a href="#" target="_blank">Contact</a></li>
         </ul>
       </nav>
     </div>
   </header>
-  
-  <div class="button-container">
+
+  <div class="container">
     <div class="content">
-      <h1>The global standard for video authenticity.</h1>
-      <!-- <p style="margin-top: 25px; margin-bottom: 30px;"></p> -->
-      <a href="http://127.0.0.1:5501/index2.html" class="button" style="margin-top: 50px;">Explore!</a>
+      <h1>Video Uploader</h1>
+      <div class="button-container">
+        <button class="button" id="uploadButton">Upload Video</button>
+        <button class="button" id="linkButton">Enter Link</button>
+        <button class="button" id="imageUploadButton">Upload Image</button>
+      </div>
+      <div id="linkForm" style="display: none;">
+        <input type="text" id="linkInput" placeholder="Enter video link">
+        <button class="button" id="enterButton">Enter</button>
+        <button class="button" id="backButton1">Back</button>
+      </div>
+      <div id="uploadForm" style="display: none;">
+        <input type="file" id="fileInput" accept="video/*">
+        <button class="button" id="backButton2">Back</button>
+      </div>
+      <div id="imageUploadForm" style="display: none;">
+        <input type="file" id="imageFileInput" accept="image/*">
+        <button class="button" id="backButton3">Back</button>
+      </div>
+      <div class="video-container" id="videoContainer" style="display: none;">
+        <video id="videoPreview" controls></video>
+      </div>
+      <!-- Popup Box -->
+      <div class="popup" id="popupBox">
+        <div class="popup-box">
+          <div class="loader"></div>
+        </div>
+      </div>
+      <div>
+        <button class="button" id="verifyButton" style="margin: auto;">Verify</button>
+      </div>
+      <!-- Verify Container -->
+      <div class="popup" id="verifyContainer" style="display: none;">
+        <div class="popup-box" style="margin: auto;">
+          <div class="loader"></div>
+        </div>
+      </div>
     </div>
   </div>
+
+  <script>
+    const linkButton = document.getElementById('linkButton');
+    const uploadButton = document.getElementById('uploadButton');
+    const imageUploadButton = document.getElementById('imageUploadButton');
+    const verifyButton = document.getElementById('verifyButton');
+    const linkForm = document.getElementById('linkForm');
+    const uploadForm = document.getElementById('uploadForm');
+    const imageUploadForm = document.getElementById('imageUploadForm');
+    const linkInput = document.getElementById('linkInput');
+    const fileInput = document.getElementById('fileInput');
+    const imageFileInput = document.getElementById('imageFileInput');
+    const enterButton = document.getElementById('enterButton');
+    const backButton1 = document.getElementById('backButton1');
+    const backButton2 = document.getElementById('backButton2');
+    const backButton3 = document.getElementById('backButton3');
+    const videoContainer = document.getElementById('videoContainer');
+    const videoPreview = document.getElementById('videoPreview');
+    const popupBox = document.getElementById('popupBox');
+    const verifyContainer = document.getElementById('verifyContainer');
+
+    linkButton.addEventListener('click', () => {
+      linkForm.style.display = 'block';
+      uploadForm.style.display = 'none';
+      imageUploadForm.style.display = 'none';
+      videoContainer.style.display = 'none';
+    });
+
+    uploadButton.addEventListener('click', () => {
+      uploadForm.style.display = 'block';
+      linkForm.style.display = 'none';
+      imageUploadForm.style.display = 'none';
+      videoContainer.style.display = 'none';
+    });
+
+    imageUploadButton.addEventListener('click', () => {
+      imageUploadForm.style.display = 'block';
+      linkForm.style.display = 'none';
+      uploadForm.style.display = 'none';
+      videoContainer.style.display = 'none';
+    });
+
+    enterButton.addEventListener('click', () => {
+      const link = linkInput.value;
+      console.log('Entered link:', link);
+      videoPreview.src = link;
+      videoContainer.style.display = 'block';
+    });
+
+    fileInput.addEventListener('change', (event) => {
+      const file = event.target.files[0];
+      console.log('Uploaded file:', file);
+      const fileURL = URL.createObjectURL(file);
+      videoPreview.src = fileURL;
+      videoContainer.style.display = 'block';
+    });
+
+    imageFileInput.addEventListener('change', (event) => {
+      const file = event.target.files[0];
+      console.log('Uploaded image:', file);
+      // Handle the uploaded image here
+    });
+
+    verifyButton.addEventListener('click', () => {
+      // Show the loading animation
+      verifyContainer.style.display = 'block';
+      
+      // Get the uploaded file
+      const file = fileInput.files[0];
+      
+      if (file) {
+        // Create a URL for the file
+        const fileURL = URL.createObjectURL(file);
+        
+        // Create a link element and trigger download
+        const a = document.createElement('a');
+        a.href = fileURL;
+        a.download = file.name; // Set the filename
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+      }
+      
+      // Redirect after 10 seconds
+      setTimeout(() => {
+        window.location.href = "http://127.0.0.1:5500/AI-output.html";
+      }, 25000); // Changed delay to 10 seconds (10000 milliseconds)
+    });
+
+    backButton1.addEventListener('click', () => {
+      linkForm.style.display = 'none';
+    });
+
+    backButton2.addEventListener('click', () => {
+      uploadForm.style.display = 'none';
+    });
+
+    backButton3.addEventListener('click', () => {
+      imageUploadForm.style.display = 'none';
+    });
+  </script>
+
 </body>
 </html>
